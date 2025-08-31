@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="login.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">
+      <i data-lucide="beer" id="logo-icon"></i>
+      <h2>Conveniencia do léo</h2>
+    </div>
+
+    <p>Digite seu email e senha</p>
+
+    <input id="email" type="text" placeholder="Email" />
+    <input id="senha" type="password" placeholder="Senha" />
+
+    <button id="acessar">Acessar</button>
+    <p id="msg"></p>
+    <p>Não tem conta? <a href="#" onclick="window.api.abrirJanelaCadastro()">Criar conta</a></p>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+  <script src="login.js"></script>
+</body>
+</html>

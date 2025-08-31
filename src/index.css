@@ -1,0 +1,90 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #0d1117;
+  color: #e6edf3;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+#logo-icon {
+  color: #58a6ff;
+  width: 32px;
+  height: 32px;
+}
+
+.logo h1 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #58a6ff;
+}
+
+.user-info p {
+  margin-bottom: 5px;
+}
+
+#nomeUsuario {
+  color: #2ea043;
+  font-weight: 600;
+}
+
+/* Grid de cards */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 800px;
+}
+
+/* Card */
+.card {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.card:hover {
+  background-color: #1f2933;
+  transform: translateY(-5px);
+}
+
+.card i {
+  color: #58a6ff;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 10px;
+}
+
+.card span {
+  display: block;
+  font-weight: 600;
+  color: #e6edf3;
+}

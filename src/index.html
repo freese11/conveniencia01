@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conveniencia do léo</title>
+  <link rel="stylesheet" href="index.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <i data-lucide="box" id="logo-icon"></i>
+      <h1>Conveniencia do léo</h1>
+    </div>
+    <div class="user-info">
+      <p>Bem-vindo ao sistema de gerenciamento de vendas!</p>
+      <p>Você está logado como:</p>
+      <h3 id="nomeUsuario">Administrador</h3>
+    </div>
+  </header>
+
+  <main class="grid-container">
+    <div class="card" onclick="window.api.abrirDashboard()">
+      <i data-lucide="layout-dashboard"></i>
+      <span>Dashboard</span>
+    </div>
+    <div class="card" onclick="window.api.abrirCategorias()">
+      <i data-lucide="tags"></i>
+      <span>Categorias</span>
+    </div>
+    <div class="card" onclick="window.api.abrirProduto()">
+      <i data-lucide="package"></i>
+      <span>Produtos</span>
+    </div>
+    <div class="card" onclick="window.api.abrirVenda()">
+      <i data-lucide="shopping-cart"></i>
+      <span>Vendas</span>
+    </div>
+    <div class="card" onclick="window.api.abrirGastos()">
+      <i data-lucide="credit-card"></i>
+      <span>Gastos</span>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+  <script src="index.js"></script>
+</body>
+</html>
