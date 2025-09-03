@@ -11,7 +11,6 @@ async function validarLogin(event, email, senha) {
 }
 
 
-
 module.exports = {
     validarLogin     
     

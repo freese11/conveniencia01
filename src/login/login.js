@@ -6,15 +6,21 @@ const msg = document.getElementById('msg');
 btn_acessar.addEventListener('click', validarLogin);
 
 async function validarLogin() {
-  const retorno = await window.api.validarLogin(email.value.toLowerCase(), senha.value);
-
-  if (retorno && retorno.perfil) {
-    localStorage.setItem('perfil', retorno.perfil);
-    msg.textContent = 'Login realizado com sucesso';
-    msg.style.color = 'green';
-    await window.api.abrirJanelaPrincipal();
-  } else {
-    msg.textContent = 'Email ou senha incorretos';
-    msg.style.color = 'red';
+    const retorno = await window.api.validarLogin(email.value.toLowerCase(), senha.value);
+    console.log(retorno.perfil);
+    if (retorno && retorno.perfil == 'adm') {
+      localStorage.setItem('perfil', retorno.perfil)
+      msg.textContent = 'deu bom'
+      msg.style.color = 'green'
+      await window.api.abrirJanelaPrincipal()
+      console.log(retorno.perfil)
   }
+
+  else if(retorno && retorno.perfil == 'user'){
+      localStorage.setItem('perfil', retorno.perfil)
+      msg.textContent = 'deu bom, user'
+      await window.api.abrirJanelaPrincipal()
+      console.log(retorno.perfil)
+  }
+
 }

@@ -3,13 +3,13 @@ const { contextBridge, ipcRenderer, ipcMain } = require('electron');
 const {createMainWindow,createMainWindowUser} = require('./janelaPrincipal');
 
 
-const {
-    atualizarVenda,
-    BuscarVenda,
-    deletarVenda,
-    adicionarVenda,
+// const {
+//     atualizarVenda,
+//     BuscarVenda,
+//     deletarVenda,
+//     adicionarVenda,
     
-} = require('src/venda/vendaDb');
+// } = require('src/venda/vendaDb');
 
 const {
     buscarProdutos,
@@ -17,31 +17,29 @@ const {
     atualizarProduto,
     deletarProduto
 
-} = require('./produto/produtoDb');
+} = require('../src/produtos/produtoDb');
 
-const {
- buscarUsuario
-} = require ('./usuario/usuarioDb')
-
+// const {
+//     buscarUsuario
+// } = require('../src/usuario/usuarioDb');
 
 const {
     validarLogin
-}= require('./login/loginDB');
+}= require('../src/login/loginDb');
 
 const {
 modalAbrirVenda,
     modalAbrirProduto,
-    modalAbrirCadastro
-} = require('./janelamodal');
+} = require('../src/janelamodal');
 
-const {
-    mostrarAlert,
-    mostrarConfirm
-} = require('./dialog/dialog')
+// const {
+//     mostrarAlert,
+//     mostrarConfirm
+// } = require('./dialog/dialog')
 
-const {
-    adicionarCadastro
-} = require('./cadastro/cadastroDb')
+// const {
+//     adicionarCadastro
+// } = require('./cadastro/cadastroDb')
 
 function registrarJanelaDialog(){
     ipcMain.handle("dialog-alert", mostrarAlert),
@@ -49,18 +47,10 @@ function registrarJanelaDialog(){
 }
 
 
-
 function registrarJanelas(){
-    ipcMain.on("abrir-cadastro", modalAbrirCadastro),
     ipcMain.on('abrir-venda',modalAbrirVenda),
     ipcMain.on('abrir-produto',modalAbrirProduto),
-    ipcMain.on('abrir-menu',createMainWindow),
-    ipcMain.on('abrir-cliente',modalAbrirCliente);
-}
-
-//function de cadastro
-function registrarCadastro(){
-    ipcMain.handle('cadastro-usuario', adicionarCadastro);
+    ipcMain.on('abrir-menu',createMainWindow);
 }
 
 
@@ -68,12 +58,6 @@ function registrarLoginHandler(){
     ipcMain.handle('validar-login',validarLogin);
 }
 
-
-function registrarUsuarioHandler(){
-    ipcMain.handle('buscar-usuario',buscarUsuario)
- 
-
-}
 
 function registrarProdutoHandler() {
     ipcMain.handle('buscar-produtos', buscarProdutos);
@@ -84,25 +68,11 @@ function registrarProdutoHandler() {
 
 
 
-function registrarVendaHandler() {
-    ipcMain.handle('buscar-venda',BuscarVenda);
-    ipcMain.handle('deletar-venda', deletarVenda);
-    ipcMain.handle('atualizar-venda', atualizarVenda);
-    ipcMain.handle('adicionar-venda', adicionarVenda);
-
-}
-
-
 
 function registrarTodos() {
-    registrarCadastro();
-    registrarUsuarioHandler();
-    registrarClienteHandler();
-    registrarVendaHandler();
     registrarProdutoHandler();
     registrarLoginHandler();
     registrarJanelas();
-    registrarJanelaDialog();
 }
 
 module.exports = {
