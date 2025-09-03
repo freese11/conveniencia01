@@ -1,78 +1,55 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
+// Funções de diálogo
 function registrarDialogAlert(mensagem) {
-    ipcRenderer.invoke("dialog-alert", mensagem)
-}
-function registrarDialogConfirm(mensagem) {
-    ipcRenderer.invoke("dialog-confirm", mensagem)
+    return ipcRenderer.invoke("dialog-alert", mensagem);
 }
 
-// função de cadastro
-function adicionarCadastro(nome, email, numero, senha, perfil) {
-    ipcRenderer.invoke("cadastro-usuario", nome, email, numero, senha, perfil);
+function registrarDialogConfirm(mensagem) {
+    return ipcRenderer.invoke("dialog-confirm", mensagem);
 }
+
+// Funções de cadastro
+function adicionarCadastro(nome, email, numero, senha, perfil) {
+    return ipcRenderer.invoke("cadastro-usuario", nome, email, numero, senha, perfil);
+}
+
 function abrirJanelaCadastro() {
     return ipcRenderer.send("abrir-cadastro");
 }
 
-
-// Funções de Produto
+// Funções de Produto (AJUSTADAS)
 function buscarProdutos() {
     return ipcRenderer.invoke("buscar-produtos");
 }
 
-function adicionarProduto(
-    codproduto,
-    marca,
-    valor,
-    estoque,
-    tipo,
-    cor,
-    nome,
-    ativoInativo,
-    tamanho
-) {
+function adicionarProduto(nome, preco_venda, preco_custo, estoque, tipo, ativo_inativo) {
     return ipcRenderer.invoke(
         "adicionar-produto",
-        codproduto,
-        marca,
-        valor,
+        nome,
+        preco_venda,
+        preco_custo,
         estoque,
         tipo,
-        cor,
-        nome,
-        ativoInativo,
-        tamanho
+        ativo_inativo
     );
 }
 
-function atualizarProduto(
-    codproduto,
-    marca,
-    valor,
-    estoque,
-    tipo,
-    cor,
-    nome,
-    ativoInativo,
-    tamanho
-) {
+function atualizarProduto(id, nome, preco_venda, preco_custo, estoque, tipo, ativo_inativo) {
     return ipcRenderer.invoke(
         "atualizar-produto",
-        codproduto,
-        marca,
-        valor,
+        id,
+        nome,
+        preco_venda,
+        preco_custo,
         estoque,
         tipo,
-        cor,
-        nome,
-        ativoInativo,
-        tamanho
+        ativo_inativo
     );
 }
 
-function deletarProduto(codproduto) {
-    return ipcRenderer.invoke("deletar-produto", codproduto);
+function deletarProduto(id) {
+    return ipcRenderer.invoke("deletar-produto", id);
 }
 
 // Funções de Usuário
@@ -89,15 +66,7 @@ function deletarVenda(codvenda) {
     return ipcRenderer.invoke("deletar-venda", codvenda);
 }
 
-function atualizarVenda(
-    codvenda,
-    codcliente,
-    codproduto,
-    codusuario,
-    status,
-    valortotal,
-    data
-) {
+function atualizarVenda(codvenda, codcliente, codproduto, codusuario, status, valortotal, data) {
     return ipcRenderer.invoke(
         "atualizar-venda",
         codvenda,
@@ -110,14 +79,7 @@ function atualizarVenda(
     );
 }
 
-function adicionarVenda(
-    codcliente,
-    codproduto,
-    codusuario,
-    status,
-    valortotal,
-    data
-) {
+function adicionarVenda(codcliente, codproduto, codusuario, status, valortotal, data) {
     return ipcRenderer.invoke(
         "adicionar-venda",
         codcliente,
@@ -129,7 +91,7 @@ function adicionarVenda(
     );
 }
 
-// Função para abrir janela de venda
+// Abertura de janelas
 function abrirVenda() {
     return ipcRenderer.send("abrir-venda");
 }
@@ -138,38 +100,37 @@ function abrirProduto() {
     return ipcRenderer.send("abrir-produto");
 }
 
-
+// Login
 function validarLogin(usuario, senha) {
     return ipcRenderer.invoke("validar-login", usuario, senha);
 }
+
 function abrirJanelaPrincipal() {
     return ipcRenderer.send("abrir-menu");
 }
 
-// Expondo todas as funções de uma vez só (EVITA sobrescrever)
+// Expondo funções no contexto seguro
 contextBridge.exposeInMainWorld("api", {
-    //api de cadastro
+    registrarDialogAlert,
+    registrarDialogConfirm,
+
     adicionarCadastro,
     abrirJanelaCadastro,
 
+    buscarProdutos,
+    adicionarProduto,
+    atualizarProduto,
+    deletarProduto,
 
+    buscarUsuario,
 
-    buscarProdutos: buscarProdutos,
-    adicionarProduto: adicionarProduto,
-    atualizarProduto: atualizarProduto,
-    deletarProduto: deletarProduto,
+    abrirVenda,
+    BuscarVenda,
+    adicionarVenda,
+    atualizarVenda,
+    deletarVenda,
 
-    buscarUsuario: buscarUsuario,
-
-    abrirVenda: abrirVenda,
-    BuscarVenda: BuscarVenda,
-    adicionarVenda: adicionarVenda,
-    atualizarVenda: atualizarVenda,
-    deletarVenda: deletarVenda,
-
-    abrirJanelaPrincipal: abrirJanelaPrincipal,
+    abrirJanelaPrincipal,
     validarLogin,
-    registrarDialogAlert,
-    registrarDialogConfirm,
-    abrirProduto: abrirProduto,
+    abrirProduto
 });

@@ -1,8 +1,8 @@
 const tabelaProduto = document.getElementById("tabelaTableDados");
-const ModalCodproduto = document.getElementById("ModalCodproduto");
+const ModalId = document.getElementById("ModalId");
 const ModalNome = document.getElementById("ModalNome");
-const ModalPrecoVenda = document.getElementById("ModalpreçoVenda");
-const ModalPrecoCusto = document.getElementById("ModalpreçoCusto");
+const ModalPrecoVenda = document.getElementById("ModalPrecoVenda");
+const ModalPrecoCusto = document.getElementById("ModalPrecoCusto");
 const ModalEstoque = document.getElementById("ModalEstoque");
 const ModalTipo = document.getElementById("ModalTipo");
 const ModalAtivoInativo = document.getElementById("ModalAtivoInativo");
@@ -18,8 +18,8 @@ botaoSalvarProduto.addEventListener("click", salvarProduto);
 botaoLimparProduto.addEventListener("click", limparProduto);
 
 // Exibir detalhes no modal
-function mostrarDetalhesProduto(codproduto, nome, precoVenda, precoCusto, estoque, tipo, ativoInativo) {
-    ModalCodproduto.value = codproduto;
+function mostrarDetalhesProduto(id, nome, precoVenda, precoCusto, estoque, tipo, ativoInativo) {
+    ModalId.value = id;
     ModalNome.value = nome;
     ModalPrecoVenda.value = precoVenda;
     ModalPrecoCusto.value = precoCusto;
@@ -30,13 +30,13 @@ function mostrarDetalhesProduto(codproduto, nome, precoVenda, precoCusto, estoqu
 
 // Limpar campos
 function limparProduto() {
-    mostrarDetalhesProduto("", "", "", "", "", "", "Ativo");
+    mostrarDetalhesProduto("", "", "", "", "", "", "");
 }
 
 // Salvar (decide entre adicionar ou atualizar)
 function salvarProduto() {
-    const codproduto = ModalCodproduto.value;
-    if (codproduto) {
+    const id = ModalId.value;
+    if (id) {
         atualizarProduto();
     } else {
         adicionarProduto();
@@ -45,48 +45,48 @@ function salvarProduto() {
 
 // Adicionar produto
 async function adicionarProduto() {
-    const nome = ModalNome.value;
-    const precoVenda = ModalPrecoVenda.value;
-    const precoCusto = ModalPrecoCusto.value;
-    const estoque = ModalEstoque.value;
-    const tipo = ModalTipo.value;
+    const nome = ModalNome.value.trim();
+    const precoVenda = parseFloat(ModalPrecoVenda.value) || 0;
+    const precoCusto = parseFloat(ModalPrecoCusto.value) || 0;
+    const estoque = parseInt(ModalEstoque.value) || 0;
+    const tipo = ModalTipo.value.trim();
     const ativoInativo = ModalAtivoInativo.value;
 
     const retorno = await window.api.adicionarProduto(
         nome, precoVenda, precoCusto, estoque, tipo, ativoInativo
     );
 
-    console.log(retorno);
+    console.log("Produto adicionado:", retorno);
     carregarProdutos();
     limparProduto();
 }
 
 // Atualizar produto
 async function atualizarProduto() {
-    const codproduto = ModalCodproduto.value;
-    const nome = ModalNome.value;
-    const precoVenda = ModalPrecoVenda.value;
-    const precoCusto = ModalPrecoCusto.value;
-    const estoque = ModalEstoque.value;
-    const tipo = ModalTipo.value;
+    const id = ModalId.value;
+    const nome = ModalNome.value.trim();
+    const precoVenda = parseFloat(ModalPrecoVenda.value) || 0;
+    const precoCusto = parseFloat(ModalPrecoCusto.value) || 0;
+    const estoque = parseInt(ModalEstoque.value) || 0;
+    const tipo = ModalTipo.value.trim();
     const ativoInativo = ModalAtivoInativo.value;
 
     const retorno = await window.api.atualizarProduto(
-        codproduto, nome, precoVenda, precoCusto, estoque, tipo, ativoInativo
+        id, nome, precoVenda, precoCusto, estoque, tipo, ativoInativo
     );
 
-    console.log(retorno);
+    console.log("Produto atualizado:", retorno);
     carregarProdutos();
     limparProduto();
 }
 
 // Excluir produto
 async function excluirProduto() {
-    const codproduto = ModalCodproduto.value;
-    if (!codproduto) return;
+    const id = ModalId.value;
+    if (!id) return;
 
-    const resultado = await window.api.deletarProduto(codproduto);
-    console.log(resultado);
+    const resultado = await window.api.deletarProduto(id);
+    console.log("Produto excluído:", resultado);
 
     carregarProdutos();
     limparProduto();
@@ -97,7 +97,7 @@ function criarLinhaProduto(produto) {
     const linha = document.createElement("tr");
 
     const celulas = [
-        produto.codproduto,
+        produto.id,
         produto.nome,
         produto.preco_venda,
         produto.preco_custo,
@@ -118,7 +118,7 @@ function criarLinhaProduto(produto) {
     botao.textContent = "Editar";
     botao.addEventListener("click", function () {
         mostrarDetalhesProduto(
-            produto.codproduto,
+            produto.id,
             produto.nome,
             produto.preco_venda,
             produto.preco_custo,

@@ -33,13 +33,10 @@ let mainWindow2 = getJanelaPrincipalUser(); // Obtém a janela principal do usu�
     }
 }
 
-
 function modalAbrirProduto(event) {
-   let mainWindow2 = getJanelaPrincipalUser(); // Obtém a janela principal do usuário
-    let mainWindow = getJanelaPrincipal(); // Obtém a janela principal existente
-    mainWindow = mainWindow || mainWindow2; // Prioriza a janela do usuário, se existir
+    let mainWindow = getJanelaPrincipal(); // Usa apenas a janela principal padrão
     if (mainWindow) {
-        criarJanelaModal(mainWindow, './src/produto/produto.html');
+        criarJanelaModal(mainWindow, './src/produtos/produto.html');
     } else {
         console.warn('Não foi possível abrir a modal: Janela principal não encontrada.');
     }

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +8,6 @@
     <link rel="stylesheet" href="produto.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-
 <body>
     <header>
         <h1>Informações de Produtos</h1>
@@ -24,12 +22,12 @@
                 <tr>
                     <th>Código</th>
                     <th>Nome</th>
-                    <th>preço_venda</th>
-                    <th>preço_custo</th>
+                    <th>Preço Venda</th>
+                    <th>Preço Custo</th>
                     <th>Estoque</th>
                     <th>Tipo</th>
-                    <th>Ativo/Inativo:</th>
-
+                    <th>Ativo/Inativo</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody id="tabelaTableDados"></tbody>
@@ -37,61 +35,58 @@
 
         <!-- Modal de Produto -->
         <div id="modal">
-            <button id="btn-limpar">
-                <i data-lucide="shield-check"></i> adicionar novo produto
+            <button id="btn-limpar" class="btn-primario">
+                <i data-lucide="shield-check"></i> Adicionar Novo Produto
             </button>
 
             <h3>Editar Produto</h3>
 
-            <label for="ModalCodproduto">Código do Produto:</label>
-            <input type="text" id="ModalCodproduto" readonly />
-            <br /><br />
+            <div class="campo">
+                <label for="ModalId">Código do Produto:</label>
+                <input type="text" id="ModalId" readonly />
+            </div>
 
-            <label for="ModalNome">Nome:</label>
-            <input type="text" id="ModalNome" />
-            <br /><br />
+            <div class="campo">
+                <label for="ModalNome">Nome:</label>
+                <input type="text" id="ModalNome" />
+            </div>
 
+            <div class="campo">
+                <label for="ModalPrecoVenda">Preço Venda:</label>
+                <input type="number" id="ModalPrecoVenda" step="0.01" />
+            </div>
 
-    <label for="ModalpreçoVenda">preço_venda:</label>
-            <input type="number" id="ModalpreçoVenda" step="0.01" />
-            <br /><br />
+            <div class="campo">
+                <label for="ModalPrecoCusto">Preço Custo:</label>
+                <input type="number" id="ModalPrecoCusto" step="0.01" />
+            </div>
 
+            <div class="campo">
+                <label for="ModalEstoque">Estoque:</label>
+                <input type="number" id="ModalEstoque" />
+            </div>
 
-                <label for="ModalpreçoCusto">preço_custo:</label>
-            <input type="number" id="ModalpreçoCusto" step="0.01" />
-            <br /><br />
+            <div class="campo">
+                <label for="ModalTipo">Tipo:</label>
+                <input type="text" id="ModalTipo" />
+            </div>
 
+            <div class="campo">
+                <label for="ModalAtivoInativo">Ativo/Inativo:</label>
+                <select id="ModalAtivoInativo">
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
 
-          <label for="ModalEstoque">Estoque:</label>
-            <input type="number" id="ModalEstoque" />
-            <br /><br />
-
-        
-
-  
-
-            <label for="ModalTipo">Tipo:</label>
-            <input type="text" id="ModalTipo" />
-            <br /><br />
-
-
-          
-
-            <label for="ModalAtivoInativo">Ativo/Inativo:</label>
-            <select id="ModalAtivoInativo">
-                <option value="Ativo">Ativo</option>
-                <option value="Inativo">Inativo</option>
-            </select>
-            <br /><br />
-
-            
-            <button id="btn-salvar"><i data-lucide="save"></i></button>
-            <button id="btn-excluir"><i data-lucide="trash-2"></i></button>
+            <div class="botoes">
+                <button id="btn-salvar" class="btn-salvar"><i data-lucide="save"></i> Salvar</button>
+                <button id="btn-excluir" class="btn-excluir"><i data-lucide="trash-2"></i> Excluir</button>
+            </div>
         </div>
     </div>
 
     <script src="produto.js"></script>
     <script>lucide.createIcons();</script>
 </body>
-
 </html>
