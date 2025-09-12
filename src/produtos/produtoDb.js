@@ -31,9 +31,24 @@ async function adicionarProduto(nome, preco_venda, preco_custo, estoque, tipo, a
     return resultado.rows[0]; // Retorna o produto inserido
 }
 
+// acrescente no src/produtos/produtoDb.js
+const pool = require('../db');
+
+async function baixarEstoque(produtoId, quantidade) {
+  await pool.query(
+    `UPDATE produtos
+       SET estoque = estoque - $1
+     WHERE id = $2 AND estoque >= $1`,
+    [quantidade, produtoId]
+  );
+}
+
+
+
 module.exports = {
     buscarProdutos,
     deletarProduto,
     atualizarProduto,
-    adicionarProduto
+    adicionarProduto,
+    baixarEstoque
 };

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Vendas</title>
+    <link rel="stylesheet" href="venda.css">
+</head>
+<body>
+
+    <header class="header">
+        <h1>Nova Venda</h1>
+    </header>
+
+    <main class="container">
+        <section class="painel-produtos">
+            <h2>Produtos Disponíveis</h2>
+            <div id="lista-produtos" class="lista-produtos">
+                </div>
+        </section>
+
+        <section class="painel-venda">
+            <h2>Carrinho</h2>
+            <div id="carrinho" class="carrinho">
+                </div>
+
+            <div class="total-venda">
+                <span class="label">Total:</span>
+                <span id="total" class="valor-total">0.00</span>
+            </div>
+
+            <div class="opcoes-pagamento">
+                <label for="metodo-pagamento">Método de Pagamento:</label>
+                <select id="metodo-pagamento">
+                    <option value="dinheiro">Dinheiro</option>
+                    <option value="cartao">Cartão</option>
+                    <option value="pix">PIX</option>
+                </select>
+            </div>
+
+            <button id="finalizar-venda-btn" class="btn-finalizar">Finalizar Venda</button>
+            <button id="voltar-btn" class="btn-voltar">Voltar</button>
+        </section>
+    </main>
+
+    <script src="vendas.js"></script>
+</body>
+</html>

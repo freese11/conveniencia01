@@ -42,6 +42,17 @@ function modalAbrirProduto(event) {
     }
 }
 
+
+function modalAbrirVenda(event) {
+  let mainWindow = getJanelaPrincipal();
+  if (mainWindow) {
+    criarJanelaModal(mainWindow, './src/vendas/venda.html'); // <- aponta para o HTML acima
+  } else {
+    console.warn('Não foi possível abrir a modal: Janela principal não encontrada.');
+  }
+}
+
+
 function modalAbrirCadastro(event){
     let windowLogin = getJanelaLogin(); // Obtém a janela principal existente
     if (windowLogin) {
