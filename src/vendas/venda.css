@@ -1,118 +1,194 @@
-/* vendas.css */
-:root {
-    --primary-color: #4CAF50;
-    --secondary-color: #f44336;
-    --background-color: #f0f2f5;
-    --card-bg-color: #ffffff;
-    --text-color: #333;
-    --border-color: #e0e0e0;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: var(--background-color);
+/* === Reset básico === */
+* {
     margin: 0;
     padding: 0;
-    color: var(--text-color);
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
-.header {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.container {
-    display: flex;
-    padding: 20px;
-    gap: 20px;
-}
-
-.painel-produtos, .painel-venda {
-    background-color: var(--card-bg-color);
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    padding: 20px;
-}
-
-.painel-produtos {
-    flex: 2;
-}
-
-.painel-venda {
-    flex: 1;
+/* === Corpo === */
+body {
+    background: #0d1117; /* preto azulado */
+    color: #e6edf3;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
+/* === Cabeçalho === */
+.header {
+    background: linear-gradient(90deg, #0d47a1, #1565c0);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.header h1 {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+}
+
+/* === Container principal === */
+.container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+
+    /* garante que produtos fiquem à esquerda e carrinho à direita */
+    grid-template-areas: "produtos carrinho";
+}
+
+/* === Painéis === */
+.painel-produtos {
+    grid-area: produtos;
+    background: #161b22;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.painel-venda {
+    grid-area: carrinho;
+    background: #161b22;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+
+    /* borda azul brilhante */
+    border: 2px solid #1f6feb;
+    box-shadow: 0 0 10px #1f6feb, 0 0 20px #1f6feb55;
+    animation: brilho 2s infinite alternate;
+}
+
+.painel-produtos h2, .painel-venda h2 {
+    color: #58a6ff;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 0.5rem;
+}
+
+/* === Lista de produtos === */
 .lista-produtos {
-    max-height: 400px;
-    overflow-y: auto;
-    border: 1px solid var(--border-color);
-    padding: 10px;
-    border-radius: 4px;
+    display: grid;
+    gap: 0.8rem;
 }
 
-.item-produto {
-    padding: 10px;
-    border-bottom: 1px solid var(--border-color);
+.lista-produtos div {
+    background: #21262d;
+    padding: 0.8rem;
+    border-radius: 8px;
+    transition: background 0.3s;
     cursor: pointer;
-    transition: background-color 0.2s;
 }
 
-.item-produto:hover {
-    background-color: #f5f5f5;
+.lista-produtos div:hover {
+    background: #1f6feb;
+    color: white;
 }
 
+/* === Carrinho === */
 .carrinho {
-    min-height: 150px;
-    border: 1px solid var(--border-color);
-    padding: 10px;
-    border-radius: 4px;
-    margin-top: 10px;
-    flex-grow: 1;
+    display: grid;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
 }
 
+.carrinho div {
+    background: #21262d;
+    padding: 0.8rem;
+    border-radius: 8px;
+}
+
+/* === Total === */
 .total-venda {
-    font-size: 1.5em;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
     font-weight: bold;
-    margin: 15px 0;
-    text-align: right;
 }
 
+.valor-total {
+    color: #4fc3f7;
+}
+
+/* === Opções de pagamento === */
 .opcoes-pagamento {
-    margin-bottom: 20px;
+    margin-bottom: 1.2rem;
+}
+
+.opcoes-pagamento label {
+    margin-right: 0.5rem;
+    font-weight: bold;
+    color: #9da5b4;
+}
+
+.opcoes-pagamento select {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    background: #0d1117;
+    color: #e6edf3;
+    outline: none;
+}
+
+.opcoes-pagamento select:focus {
+    border-color: #1f6feb;
+}
+
+/* === Botões === */
+button {
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
 }
 
 .btn-finalizar {
-    background-color: var(--primary-color);
+    background: #1f6feb;
     color: white;
-    padding: 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.2em;
-    cursor: pointer;
-    width: 100%;
-    margin-top: auto; /* Empurra o botão para o final do painel */
+    margin-right: 0.5rem;
 }
 
 .btn-finalizar:hover {
-    background-color: #43a047;
+    background: #58a6ff;
+    transform: scale(1.05);
+    box-shadow: 0 0 12px #1f6feb;
 }
 
 .btn-voltar {
-    margin-top: 10px;
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
+    background: #30363d;
+    color: #e6edf3;
 }
 
 .btn-voltar:hover {
-    background-color: #d32f2f;
+    background: #484f58;
+    transform: scale(1.05);
+    box-shadow: 0 0 12px #58a6ff;
+}
+
+/* === Animação do brilho === */
+@keyframes brilho {
+    from {
+        box-shadow: 0 0 8px #1f6feb, 0 0 16px #1f6feb55;
+    }
+    to {
+        box-shadow: 0 0 16px #58a6ff, 0 0 28px #58a6ff88;
+    }
+}
+
+/* === Responsivo === */
+@media (max-width: 900px) {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "produtos"
+            "carrinho";
+    }
 }
