@@ -18,7 +18,7 @@ const { getProdutos, addVenda } = require('./vendas/vendaDb');
 // ✅ Registrar handlers de produto
 function registrarProdutoHandler() {
     ipcMain.handle('buscar-produtos', buscarProdutos);
-    ipcMain.handle('adicionar-produto', adicionarProduto);
+    ipcMain.handle('adicionar-produtos', adicionarProduto);
     ipcMain.handle('atualizar-produto', atualizarProduto);
     ipcMain.handle('deletar-produto', deletarProduto);
 }
