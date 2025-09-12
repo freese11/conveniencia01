@@ -45,8 +45,11 @@ function salvarProduto() {
 
 // Adicionar produto
 async function adicionarProduto() {
+
     const nome = ModalNome.value.trim();
+
     const precoVenda = parseFloat(ModalPrecoVenda.value) || 0;
+
     const precoCusto = parseFloat(ModalPrecoCusto.value) || 0;
     const estoque = parseInt(ModalEstoque.value) || 0;
     const tipo = ModalTipo.value.trim();
@@ -55,7 +58,8 @@ async function adicionarProduto() {
     const retorno = await window.api.adicionarProduto(
         nome, precoVenda, precoCusto, estoque, tipo, ativoInativo
     );
-
+    console.log(precoVenda);
+    console.log(nome)
     console.log("Produto adicionado:", retorno);
     carregarProdutos();
     limparProduto();

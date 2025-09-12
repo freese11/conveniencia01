@@ -2,7 +2,7 @@ const db = require('../db');
 
 // Buscar todos os produtos
 async function buscarProdutos() {
-    const resultado = await db.query(' select id, nome, "preco_venda ", preco_custo, "estoque ", tipo, ativo_inativo FROM produtos ORDER BY id ASC');
+    const resultado = await db.query(' select id, nome, preco_venda, preco_custo, estoque, tipo, ativo_inativo FROM produtos ORDER BY id ASC');
     return resultado.rows;
 }
 
