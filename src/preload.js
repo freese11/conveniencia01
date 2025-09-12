@@ -13,7 +13,7 @@ contextBridge.exposeInMainWorld("api", {
 
   // Funções de produto
   buscarProdutos: () => ipcRenderer.invoke("buscar-produtos"),
-  adicionarProduto: (nome, preco_venda, preco_custo, estoque, tipo, ativo_inativo) => ipcRenderer.invoke("adicionar-produto", nome, preco_venda, preco_custo, estoque, tipo, ativo_inativo),
+  adicionarProduto: (nome, preco_venda, preco_custo, estoque, tipo, ativo_inativo) => ipcRenderer.invoke("adicionar-produtos", nome, preco_venda, preco_custo, estoque, tipo, ativo_inativo),
   atualizarProduto: (id, nome, preco_venda, preco_custo, estoque, tipo, ativo_inativo) => ipcRenderer.invoke("atualizar-produto", id, nome, preco_venda, preco_custo, estoque, tipo, ativo_inativo),
   deletarProduto: (id) => ipcRenderer.invoke("deletar-produto", id),
 
