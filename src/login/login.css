@@ -7,8 +7,8 @@
 }
 
 body {
-  background-color: #0d1117;
-  color: #e6edf3;
+  background-color: #000000; /* fundo preto */
+  color: #ffffff;
   font-size: 16px;
   display: flex;
   justify-content: center;
@@ -18,12 +18,12 @@ body {
 
 /* Container principal */
 .login-container {
-  background-color: #161b22;
+  background-color: #111111;
   padding: 30px;
   border-radius: 10px;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); /* leve brilho vermelho */
   text-align: center;
 }
 
@@ -34,18 +34,18 @@ body {
   justify-content: center;
   gap: 10px;
   margin-bottom: 20px;
+  flex-direction: column;
 }
 
-#logo-icon {
-  color: #58a6ff;
-  width: 28px;
-  height: 28px;
+#logo-img {
+  width: 80px;
+  height: auto;
 }
 
 .logo h2 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
-  color: #58a6ff;
+  color: #ff0000; /* vermelho */
 }
 
 /* Inputs */
@@ -53,16 +53,16 @@ input {
   width: 100%;
   padding: 10px;
   margin-top: 10px;
-  background-color: #0d1117;
-  color: #f0f6fc;
-  border: 1px solid #30363d;
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #ff0000;
   border-radius: 5px;
 }
 
 /* Botão de acesso */
 #acessar {
   width: 100%;
-  background-color: #238636;
+  background-color: #0055ff; /* azul forte */
   color: white;
   padding: 10px;
   margin-top: 15px;
@@ -73,18 +73,19 @@ input {
 }
 
 #acessar:hover {
-  background-color: #2ea043;
+  background-color: #0033aa;
 }
 
 /* Mensagem de status */
 #msg {
   margin-top: 10px;
   font-weight: 500;
+  color: #ff0000;
 }
 
 /* Link de cadastro */
 a {
-  color: #58a6ff;
+  color: #0055ff;
   text-decoration: none;
 }
 

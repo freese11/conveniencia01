@@ -18,13 +18,9 @@ contextBridge.exposeInMainWorld("api", {
   deletarProduto: (id) => ipcRenderer.invoke("deletar-produto", id),
 
   // Funções de venda
-  buscarVenda: () => ipcRenderer.invoke("buscar-venda"),
-  deletarVenda: (codvenda) => ipcRenderer.invoke("deletar-venda", codvenda),
-  adicionarVenda: (codcliente, codproduto, codusuario, status, valortotal, data) => ipcRenderer.invoke("adicionar-venda", codcliente, codproduto, codusuario, status, valortotal, data),
-  atualizarVenda: (codvenda, codcliente, codproduto, codusuario, status, valortotal, data) => ipcRenderer.invoke("atualizar-venda", codvenda, codcliente, codproduto, codusuario, status, valortotal, data),
-  finalizarVenda: (payload) => ipcRenderer.invoke("finalizar-venda", payload),
-  listarVendasResumoMes: () => ipcRenderer.invoke("listar-vendas-resumo-mes"),
-
+  buscarProdutosCarinho: () => ipcRenderer.invoke("buscar-produtos-carinho"),
+  finalizarVenda: (venda) => ipcRenderer.invoke("finalizar-venda", venda),
+  
   // Funções de navegação e login
   abrirVenda: () => ipcRenderer.send("abrir-venda"),
   abrirProduto: () => ipcRenderer.send("abrir-produto"),

@@ -1,50 +1,128 @@
-// vendas.js
+// venda.js
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Elementos do DOM
-    const listaProdutosEl = document.getElementById('lista-produtos');
+    const listaProdutoCarinho = document.getElementById('lista-produtos');
     const carrinhoEl = document.getElementById('carrinho');
     const totalVendaEl = document.getElementById('total');
     const metodoPagamentoEl = document.getElementById('metodo-pagamento');
     const finalizarVendaBtn = document.getElementById('finalizar-venda-btn');
     const voltarBtn = document.getElementById('voltar-btn');
+    const searchInput = document.getElementById('search-produtos');
 
-    // 2. Variáveis de estado
-    let produtos = []; // Array para armazenar os produtos do banco de dados
-    let carrinho = []; // Array para armazenar os itens da venda atual
+    // 2. Estado
+    let produtos = []; // lista completa vinda do DB
+    let carrinho = [];
 
-    // 3. Funções da lógica de vendas
+    // ------------------------
+    // Utils
+    // ------------------------
+    // Normaliza string (remove acentos + lowercase)
+    function normalizeString(str) {
+        if (!str) return '';
+        return str.toString()
+                  .toLowerCase()
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036f]/g, '');
+    }
 
-    // Função para carregar e exibir os produtos na interface
+    // Converte valores vindo do tipo money do PG para número
+    function parseMoney(valor) {
+        if (valor == null) return 0;
+        let s = String(valor).trim();
+
+        // Remove tudo que não seja dígito, ponto, vírgula ou sinal de menos
+        s = s.replace(/[^\d.,-]/g, '');
+
+        // Se tiver ponto e vírgula: ex "1.234,56" -> '.' são milhares, ',' decimal
+        if (s.indexOf('.') !== -1 && s.indexOf(',') !== -1) {
+            s = s.replace(/\./g, ''); // remove separador de milhares
+            s = s.replace(',', '.');  // transforma decimal em dot
+        } else {
+            // se só tiver vírgula, transforma em dot: "8,50" -> "8.50"
+            if (s.indexOf(',') !== -1) {
+                s = s.replace(',', '.');
+            }
+            // se tem só ponto, é provavelmente decimal já (ou 1000.50)
+        }
+
+        const num = parseFloat(s);
+        return isNaN(num) ? 0 : num;
+    }
+
+    // ------------------------
+    // Renderização
+    // ------------------------
+    function renderProdutos(lista) {
+        listaProdutoCarinho.innerHTML = '';
+
+        if (!lista || lista.length === 0) {
+            listaProdutoCarinho.textContent = 'Nenhum produto encontrado.';
+            return;
+        }
+
+        lista.forEach(criarProdutoUI);
+    }
+
+    // Cria card de produto
+    function criarProdutoUI(produto) {
+        const div = document.createElement('div');
+        div.classList.add('produto-card');
+
+        const precoVenda = parseMoney(produto.preco_venda);
+        const precoCusto = parseMoney(produto.preco_custo);
+
+        div.innerHTML = `
+            <h3>${produto.nome}</h3>
+            <p>Preço: R$ ${precoVenda.toFixed(2)}</p>
+            <p>Estoque: ${produto.estoque}</p>
+            <button class="btn-add">Adicionar</button>
+        `;
+
+        div.querySelector('.btn-add').addEventListener('click', () => {
+            adicionarAoCarrinho({
+                ...produto,
+                preco_venda: precoVenda,
+                preco_custo: precoCusto
+            });
+        });
+
+        listaProdutoCarinho.appendChild(div);
+    }
+
+    // ------------------------
+    // Busca/Carregamento
+    // ------------------------
     async function carregarProdutos() {
         try {
-            // Usa a função do preload para buscar os produtos no processo principal
-            produtos = await window.api.buscarProdutos();
-            
-            // Limpa a lista antes de preencher
-            listaProdutosEl.innerHTML = '';
-            
-            // Cria um elemento para cada produto
-            produtos.forEach(prod => {
-                const itemDiv = document.createElement('div');
-                itemDiv.classList.add('item-produto');
-                itemDiv.dataset.id = prod.id;
-                itemDiv.innerHTML = `${prod.nome} - R$ ${prod.preco_venda.toFixed(2)}`;
-                
-                // Adiciona um evento de clique para adicionar o produto ao carrinho
-                itemDiv.addEventListener('click', () => {
-                    adicionarAoCarrinho(prod);
-                });
-                
-                listaProdutosEl.appendChild(itemDiv);
-            });
-
-        } catch (error) {
-            console.error("Erro ao carregar produtos:", error);
-            window.api.dialogAlert("Erro ao carregar os produtos. Tente novamente.");
+            // busca do main process via preload (window.api)
+            produtos = await window.api.buscarProdutosCarinho();
+            renderProdutos(produtos);
+        } catch (err) {
+            console.error('Erro ao carregar produtos:', err);
+            listaProdutoCarinho.textContent = 'Erro ao carregar produtos.';
         }
     }
 
-    // Função para adicionar um produto ao carrinho
+    // ------------------------
+    // Pesquisa (filtro)
+    // ------------------------
+    function filtrarProdutosPorTexto(texto) {
+        const q = normalizeString(texto);
+        if (!q) {
+            renderProdutos(produtos);
+            return;
+        }
+        const filtrados = produtos.filter(p => normalizeString(p.nome).includes(q));
+        renderProdutos(filtrados);
+    }
+
+    searchInput && searchInput.addEventListener('input', (e) => {
+        filtrarProdutosPorTexto(e.target.value);
+    });
+
+    // ------------------------
+    // Carrinho
+    // ------------------------
     function adicionarAoCarrinho(produto) {
         const itemExistente = carrinho.find(item => item.id === produto.id);
 
@@ -57,13 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
         atualizarCarrinhoUI();
     }
 
-    // Função para remover um item do carrinho
     function removerDoCarrinho(produtoId) {
         carrinho = carrinho.filter(item => item.id !== produtoId);
         atualizarCarrinhoUI();
     }
-    
-    // Função para atualizar a interface do carrinho e o total
+
     function atualizarCarrinhoUI() {
         carrinhoEl.innerHTML = '';
         let total = 0;
@@ -83,10 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 total += item.preco_venda * item.quantidade;
             });
 
-            // Adiciona evento de clique para os botões de remover
             carrinhoEl.querySelectorAll('.remover-item-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    const produtoId = parseInt(e.target.dataset.id);
+                    const produtoId = parseInt(e.target.dataset.id, 10);
                     removerDoCarrinho(produtoId);
                 });
             });
@@ -95,7 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
         totalVendaEl.textContent = total.toFixed(2);
     }
 
-    // Função para finalizar a venda
+    // ------------------------
+    // Finalizar venda
+    // ------------------------
     async function finalizarVenda() {
         if (carrinho.length === 0) {
             window.api.dialogAlert("O carrinho está vazio. Adicione produtos para finalizar a venda.");
@@ -107,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const payload = {
             total: totalVenda,
-            metodoPagamento: metodoPagamento,
+            metodoPagamento,
             itens: carrinho.map(item => ({
                 id: item.id,
                 nome: item.nome,
@@ -120,12 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (confirmacao) {
             try {
-                // Envia a venda para o processo principal através do IPC
                 const result = await window.api.finalizarVenda(payload);
                 
                 if (result.success) {
                     window.api.dialogAlert(result.message);
-                    // Limpa o carrinho e a UI após a venda
                     carrinho = [];
                     atualizarCarrinhoUI();
                 } else {
@@ -138,12 +213,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 4. Listeners de eventos
+    // ------------------------
+    // Eventos e inicialização
+    // ------------------------
     finalizarVendaBtn.addEventListener('click', finalizarVenda);
-    voltarBtn.addEventListener('click', () => {
-        window.api.abrirJanelaPrincipal(); // Abre a janela principal (menu)
-    });
+    voltarBtn.addEventListener('click', () => window.api.abrirJanelaPrincipal());
 
-    // 5. Inicialização
-    carregarProdutos(); // Carrega os produtos quando a página é aberta
+    // Carrega produtos na inicialização
+    carregarProdutos();
 });

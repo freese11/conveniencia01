@@ -8,12 +8,19 @@ const {
     deletarProduto
 } = require('./produtos/produtoDb');
 
+const {
+    buscarProdutosCarinho,
+    finalizarVenda
+} = require('./vendas/vendaDb');  // <-- Corrigi também o caminho (use ./ em vez de src/)
+
 const { validarLogin } = require('./login/loginDb');
 const { modalAbrirVenda, modalAbrirProduto } = require('./janelamodal');
 
-const { getProdutos, addVenda } = require('./vendas/vendaDb');
-
 // ✅ Registrar handlers de venda
+function registrarVendaHandler() {
+    ipcMain.handle('buscar-produtos-carinho', buscarProdutosCarinho);
+    ipcMain.handle('finalizar-venda', finalizarVenda);
+}
 
 // ✅ Registrar handlers de produto
 function registrarProdutoHandler() {
