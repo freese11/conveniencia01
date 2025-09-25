@@ -1,6 +1,8 @@
 // venda.js
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Elementos do DOM
+    // ------------------------
+    // Elementos do DOM
+    // ------------------------
     const listaProdutoCarinho = document.getElementById('lista-produtos');
     const carrinhoEl = document.getElementById('carrinho');
     const totalVendaEl = document.getElementById('total');
@@ -9,14 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const voltarBtn = document.getElementById('voltar-btn');
     const searchInput = document.getElementById('search-produtos');
 
-    // 2. Estado
+    // ------------------------
+    // Estado
+    // ------------------------
     let produtos = []; // lista completa vinda do DB
     let carrinho = [];
 
     // ------------------------
     // Utils
     // ------------------------
-    // Normaliza string (remove acentos + lowercase)
     function normalizeString(str) {
         if (!str) return '';
         return str.toString()
@@ -25,24 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
                   .replace(/[\u0300-\u036f]/g, '');
     }
 
-    // Converte valores vindo do tipo money do PG para número
     function parseMoney(valor) {
         if (valor == null) return 0;
         let s = String(valor).trim();
-
-        // Remove tudo que não seja dígito, ponto, vírgula ou sinal de menos
         s = s.replace(/[^\d.,-]/g, '');
 
-        // Se tiver ponto e vírgula: ex "1.234,56" -> '.' são milhares, ',' decimal
         if (s.indexOf('.') !== -1 && s.indexOf(',') !== -1) {
-            s = s.replace(/\./g, ''); // remove separador de milhares
-            s = s.replace(',', '.');  // transforma decimal em dot
+            s = s.replace(/\./g, '');
+            s = s.replace(',', '.');
         } else {
-            // se só tiver vírgula, transforma em dot: "8,50" -> "8.50"
             if (s.indexOf(',') !== -1) {
                 s = s.replace(',', '.');
             }
-            // se tem só ponto, é provavelmente decimal já (ou 1000.50)
         }
 
         const num = parseFloat(s);
@@ -63,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         lista.forEach(criarProdutoUI);
     }
 
-    // Cria card de produto
     function criarProdutoUI(produto) {
         const div = document.createElement('div');
         div.classList.add('produto-card');
@@ -94,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ------------------------
     async function carregarProdutos() {
         try {
-            // busca do main process via preload (window.api)
             produtos = await window.api.buscarProdutosCarinho();
             renderProdutos(produtos);
         } catch (err) {
@@ -175,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ------------------------
     async function finalizarVenda() {
         if (carrinho.length === 0) {
-            window.api.dialogAlert("O carrinho está vazio. Adicione produtos para finalizar a venda.");
+            alert("Adicione produtos ao carrinho antes de finalizar a venda.");
             return;
         }
 
@@ -192,24 +187,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 quantidade: item.quantidade
             }))
         };
-        
-        const confirmacao = await window.api.dialogConfirm(`Finalizar venda de R$ ${totalVenda.toFixed(2)}?`);
-        
-        if (confirmacao) {
-            try {
-                const result = await window.api.finalizarVenda(payload);
-                
-                if (result.success) {
-                    window.api.dialogAlert(result.message);
-                    carrinho = [];
-                    atualizarCarrinhoUI();
-                } else {
-                    window.api.dialogAlert(result.message);
-                }
-            } catch (error) {
-                console.error("Erro ao finalizar a venda:", error);
-                window.api.dialogAlert("Falha ao finalizar a venda. Tente novamente.");
+
+        try {
+            const result = await window.api.finalizarVenda(payload);
+
+            if (result.success) {
+                alert(result.message);
+                carrinho = [];
+                atualizarCarrinhoUI();
+            } else {
+                alert(result.message);
             }
+        } catch (error) {
+            console.error("Erro ao finalizar a venda:", error);
+            alert("Falha ao finalizar a venda. Tente novamente.");
         }
     }
 
@@ -219,6 +210,5 @@ document.addEventListener('DOMContentLoaded', () => {
     finalizarVendaBtn.addEventListener('click', finalizarVenda);
     voltarBtn.addEventListener('click', () => window.api.abrirJanelaPrincipal());
 
-    // Carrega produtos na inicialização
     carregarProdutos();
 });
