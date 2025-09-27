@@ -1,4 +1,4 @@
-/* Reset básico */
+/* Reset */
 * {
   margin: 0;
   padding: 0;
@@ -16,79 +16,91 @@ body {
   height: 100vh;
 }
 
-/* Container principal */
+/* Container central */
 .login-container {
   background-color: #111111;
   padding: 30px;
   border-radius: 10px;
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); /* leve brilho vermelho */
+  max-width: 380px;
   text-align: center;
+  box-shadow: 0 0 15px rgba(0, 85, 255, 0.4); /* brilho azul */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Logo e título */
+/* Logo */
 .logo {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
   flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.logo-img-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #logo-img {
-  width: 80px;
-  height: auto;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
 }
 
 .logo h2 {
   font-size: 22px;
   font-weight: 600;
-  color: #ff0000; /* vermelho */
+  color: #ffffff; /* azul forte */
+}
+
+/* Texto */
+p {
+  margin-bottom: 10px;
+  color: #ffffff;
+  font-size: 14px;
 }
 
 /* Inputs */
 input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-top: 10px;
   background-color: #000000;
   color: #ffffff;
-  border: 1px solid #ff0000;
+  border: 1px solid #0055ff; /* borda azul */
   border-radius: 5px;
 }
 
-/* Botão de acesso */
+input::placeholder {
+  color: #888;
+}
+
+/* Botão */
 #acessar {
   width: 100%;
-  background-color: #0055ff; /* azul forte */
+  background-color: #0055ff; /* azul */
   color: white;
-  padding: 10px;
+  padding: 12px;
   margin-top: 15px;
   border: none;
   border-radius: 5px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 #acessar:hover {
-  background-color: #0033aa;
+  background-color: #0033aa; /* azul escuro */
 }
 
-/* Mensagem de status */
+/* Mensagem */
 #msg {
   margin-top: 10px;
   font-weight: 500;
-  color: #ff0000;
-}
-
-/* Link de cadastro */
-a {
-  color: #0055ff;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
+  color: #0055ff; /* mensagens em azul */
 }
